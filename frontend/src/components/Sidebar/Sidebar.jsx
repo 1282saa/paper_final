@@ -249,7 +249,7 @@ export const Sidebar = () => {
 
   return (
     <div
-      className="w-[309px] h-screen flex flex-col bg-white"
+      className="hidden lg:flex lg:w-[280px] xl:w-[309px] h-screen flex-col bg-white flex-shrink-0 border-r border-gray-200"
       data-sidebar="main"
       role="navigation"
       aria-label="Main Navigation"
@@ -259,7 +259,7 @@ export const Sidebar = () => {
         - 브랜드 아이덴티티를 표시
         - 클릭 시 홈으로 이동하는 기능 추가 가능
       */}
-      <div className="inline-flex ml-[58px] w-48 h-[50px] relative mt-20 items-center gap-4">
+      <div className="inline-flex ml-[58px] w-48 h-[50px] relative mt-20 items-center gap-4 flex-shrink-0">
         {/* 로고 아이콘 배경 */}
         <div className="relative w-[50px] h-[50px] bg-main rounded-lg overflow-hidden aspect-[1]">
           <AcademicCap2
@@ -275,27 +275,29 @@ export const Sidebar = () => {
       </div>
 
       {/*
-        메뉴 섹션들
+        메뉴 섹션들 - 스크롤 가능 영역
         - menuConfig.js에서 정의된 섹션들을 동적으로 렌더링
         - 각 섹션은 제목과 여러 개의 메뉴 아이템을 포함
       */}
-      <div className="flex w-[260px] h-[580px] relative mt-[60px] flex-col items-start gap-[52px]">
-        {menuSections.map((section) => (
-          <MenuSection
-            key={section.id}
-            section={section}
-            activeItemId={activeItemId}
-            onItemClick={handleItemClick}
-          />
-        ))}
+      <div className="flex-1 overflow-y-auto mt-[60px] min-h-0">
+        <div className="flex w-[260px] flex-col items-start gap-[52px] pb-8">
+          {menuSections.map((section) => (
+            <MenuSection
+              key={section.id}
+              section={section}
+              activeItemId={activeItemId}
+              onItemClick={handleItemClick}
+            />
+          ))}
+        </div>
       </div>
 
       {/*
-        하단 메뉴
+        하단 메뉴 - 하단 고정
         - 설정, FAQ, 요금제, 로그아웃 등 부가 기능
         - 레이아웃: 왼쪽 3개 세로 배치 + 오른쪽 1개 (로그아웃)
       */}
-      <div className="inline-flex ml-[35px] w-[190px] h-[92px] relative mt-[186px] items-end gap-8">
+      <div className="inline-flex ml-[35px] w-[190px] h-[92px] relative mb-8 items-end gap-8 flex-shrink-0 border-t border-gray-100 pt-6">
         {/* 왼쪽 그룹: 설정, FAQ, 요금제 (처음 3개) */}
         <div className="flex flex-col w-[86px] items-start gap-4 relative">
           {bottomMenuItems.slice(0, 3).map((item) => (

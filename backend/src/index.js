@@ -1,13 +1,20 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import connectDB from "./config/database.js";
 import chatRoutes from "./routes/chat.js";
+import notesRoutes from "./routes/notes.js";
+import ragRoutes from "./routes/rag.js";
+import questionsRoutes from "./routes/questions.js";
 
 // 환경변수 로드
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// MongoDB 연결
+connectDB();
 
 // 미들웨어 설정
 app.use(cors()); // CORS 활성화
@@ -31,6 +38,9 @@ app.get("/health", (req, res) => {
 
 // API 라우트 등록
 app.use("/api/chat", chatRoutes);
+app.use("/api/notes", notesRoutes);
+app.use("/api/rag", ragRoutes);
+app.use("/api/questions", questionsRoutes);
 
 // 404 에러 핸들링
 app.use((req, res) => {

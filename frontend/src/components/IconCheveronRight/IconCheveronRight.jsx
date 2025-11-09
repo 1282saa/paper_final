@@ -1,7 +1,11 @@
-/*
-We're constantly improving the code you see. 
-Please share your feedback here: https://form.asana.com/?k=uvp-HPgd3_hyoXRBw1IcNg&d=1152665201300829
-*/
+/**
+ * @file IconCheveronRight.jsx
+ * @description 오른쪽 화살표 아이콘 컴포넌트
+ *
+ * @param {Object} props
+ * @param {string} props.className - 추가 CSS 클래스
+ * @param {string} props.iconCheveronRight - 아이콘 이미지 URL
+ */
 
 import React from "react";
 
@@ -11,7 +15,7 @@ export const IconCheveronRight = ({
 }) => {
   return (
     <img
-      className={`absolute w-full h-full top-0 left-0 ${className}`}
+      className={className}
       alt="Icon cheveron right"
       src={iconCheveronRight}
     />
