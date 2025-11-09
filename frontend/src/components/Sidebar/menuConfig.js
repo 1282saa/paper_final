@@ -116,7 +116,7 @@ export const menuSections = [
         id: "ai-questions",
         label: "AI 문제 생성",
         icon: IconClipboardList1,
-        path: "/ai-questions",
+        path: "/ai-question-generator",
         // AI가 학습 내용 기반으로 문제를 자동 생성하는 기능
       },
       {
