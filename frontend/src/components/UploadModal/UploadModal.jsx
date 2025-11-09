@@ -8,7 +8,10 @@ import Step1ImageUpload from "./Step1ImageUpload";
 import Step2OCRProcessing from "./Step2OCRProcessing";
 import Step3TextEdit from "./Step3TextEdit";
 import Step4Labeling from "./Step4Labeling";
-import { saveDocument } from "../../utils/documentStorage";
+import Step5FirstReview from "./Step5FirstReview";
+import Step6AIChat from "./Step6AIChat";
+import Step7Complete from "./Step7Complete";
+import { saveDocument, recordReview } from "../../utils/documentStorage";
 import { processOCRWithLLM } from "../../utils/ocrAPI";
 
 export const UploadModal = ({ isOpen, onClose }) => {
@@ -16,6 +19,7 @@ export const UploadModal = ({ isOpen, onClose }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [extractedText, setExtractedText] = useState("");
   const [ocrProgress, setOcrProgress] = useState(0);
+  const [savedDocumentId, setSavedDocumentId] = useState(null);
   const [documentData, setDocumentData] = useState({
     subject: "",
     tags: [],
@@ -69,6 +73,7 @@ export const UploadModal = ({ isOpen, onClose }) => {
 
   const handleSave = (data) => {
     try {
+      // Step 4에서 저장 (라벨링 완료 후)
       const savedDoc = saveDocument({
         ...data,
         imageUrl: uploadedImage,
@@ -76,10 +81,33 @@ export const UploadModal = ({ isOpen, onClose }) => {
       });
 
       setDocumentData(data);
+      setSavedDocumentId(savedDoc.id);
       console.log("문서 저장 완료:", savedDoc);
+
+      // Step 5로 이동 (즉시 첫 복습 시작)
+      setCurrentStep(5);
     } catch (error) {
       console.error("문서 저장 실패:", error);
     }
+  };
+
+  const handleFirstReviewComplete = () => {
+    // Step 6으로 이동 (AI 튜터와 대화)
+    setCurrentStep(6);
+  };
+
+  const handleSkipReview = () => {
+    // 복습 건너뛰고 바로 완료
+    setCurrentStep(7);
+  };
+
+  const handleAIChatComplete = () => {
+    // 첫 복습 완료 기록 (reviewStage 0 → 1로 자동 업데이트)
+    if (savedDocumentId) {
+      recordReview(savedDocumentId);
+    }
+    // Step 7로 이동 (완료 화면)
+    setCurrentStep(7);
   };
 
   const handleClose = () => {
@@ -106,7 +134,7 @@ export const UploadModal = ({ isOpen, onClose }) => {
               필기 노트 업로드
             </h2>
             <div className="flex items-center gap-2">
-              {[1, 2, 3, 4].map((step) => (
+              {[1, 2, 3, 4, 5, 6, 7].map((step) => (
                 <div
                   key={step}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
@@ -157,6 +185,31 @@ export const UploadModal = ({ isOpen, onClose }) => {
             <Step4Labeling
               onSave={handleSave}
               onBack={() => setCurrentStep(3)}
+              onClose={handleClose}
+            />
+          )}
+
+          {currentStep === 5 && (
+            <Step5FirstReview
+              image={uploadedImage}
+              extractedText={extractedText}
+              onNext={handleFirstReviewComplete}
+              onSkip={handleSkipReview}
+            />
+          )}
+
+          {currentStep === 6 && (
+            <Step6AIChat
+              extractedText={extractedText}
+              documentTitle={documentData.title}
+              onNext={handleAIChatComplete}
+              onBack={() => setCurrentStep(5)}
+            />
+          )}
+
+          {currentStep === 7 && (
+            <Step7Complete
+              documentData={documentData}
               onClose={handleClose}
             />
           )}
