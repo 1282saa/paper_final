@@ -1,0 +1,1 @@
+export { IconClipboardCheck } from "./IconClipboardCheck";

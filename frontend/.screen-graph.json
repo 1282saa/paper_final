@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "src/pages/Home.jsx",
+      "label": "Home",
+      "routes": [
+        "/"
+      ],
+      "isRoot": true
+    },
+    {
+      "id": "src/pages/BlankReview.jsx",
+      "label": "BlankReview",
+      "routes": [
+        "/blank-review"
+      ]
+    },
+    {
+      "id": "src/pages/TodayLearning.jsx",
+      "label": "TodayLearning",
+      "routes": [
+        "/today-learning"
+      ]
+    },
+    {
+      "id": "src/pages/Statistics.jsx",
+      "label": "Statistics",
+      "routes": [
+        "/statistics"
+      ]
+    },
+    {
+      "id": "src/pages/AIQuestions.jsx",
+      "label": "AIQuestions",
+      "routes": [
+        "/ai-questions"
+      ]
+    },
+    {
+      "id": "src/pages/AITutor.jsx",
+      "label": "AITutor",
+      "routes": [
+        "/ai-tutor"
+      ]
+    }
+  ],
+  "edges": []
+}
